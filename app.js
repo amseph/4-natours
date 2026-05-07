@@ -82,12 +82,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/', (req, res) => res.status(200).sendFile(`${__dirname}/public/index.html`));
+
 app.use(express.static(`${__dirname}/public`));
 
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);
 
-app.get('/', (req, res) => {
+app.get('/api/status', (req, res) => {
   res.status(200).json({
     status: 'success',
     message: 'Local Marketplace API is running',
