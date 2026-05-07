@@ -1,0 +1,209 @@
+[
+  {
+    "name": "iPhone 17 Pro Max",
+    "image": "📱",
+    "price": 86990,
+    "category": "Electronics",
+    "location": "SM Lipa",
+    "description": "Latest flagship iPhone with titanium design.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-01T10:00:00.000Z"
+  },
+  {
+    "name": "Macbook M4",
+    "image": "💻",
+    "price": 79990,
+    "category": "Electronics",
+    "location": "SM Lipa",
+    "description": "M4 chip for extreme pro performance.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-05T10:00:00.000Z"
+  },
+  {
+    "name": "Apple Watch Series 11",
+    "image": "⌚",
+    "price": 28490,
+    "category": "Electronics",
+    "location": "SM Lipa",
+    "description": "Advanced health tracking and bright display.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-10T10:00:00.000Z"
+  },
+  {
+    "name": "AirPods Max (2nd Gen)",
+    "image": "🎧",
+    "price": 32990,
+    "category": "Audio",
+    "location": "Makati",
+    "description": "Premium headphones with high-fidelity audio.",
+    "seller": "Apple Store",
+    "postedDate": "2026-03-12T10:00:00.000Z"
+  },
+  {
+    "name": "iPad Pro 13-inch (M4)",
+    "image": "📱",
+    "price": 89990,
+    "category": "Electronics",
+    "location": "SM Lipa",
+    "description": "Thinnest Apple product with Ultra Retina XDR.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-14T10:00:00.000Z"
+  },
+  {
+    "name": "Apple Studio Display",
+    "image": "🖥️",
+    "price": 104990,
+    "category": "Displays",
+    "location": "Lipa City",
+    "description": "5K Retina display with 12MP camera.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-15T10:00:00.000Z",
+    "premiumProducts": true
+  },
+  {
+    "name": "Mac Studio",
+    "image": "🖥️",
+    "price": 138000,
+    "category": "Electronics",
+    "location": "Makati",
+    "description": "Compact desktop for creative workflows.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-16T10:00:00.000Z",
+    "premiumProducts": true
+  },
+  {
+    "name": "Magic Mouse",
+    "image": "🖱️",
+    "price": 4390,
+    "category": "Accessories",
+    "location": "SM Lipa",
+    "description": "Wireless mouse with Multi-Touch surface.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-17T10:00:00.000Z"
+  },
+  {
+    "name": "Magic Keyboard",
+    "image": "⌨️",
+    "price": 5490,
+    "category": "Accessories",
+    "location": "SM Lipa",
+    "description": "Comfortable and precise typing experience.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-18T10:00:00.000Z"
+  },
+  {
+    "name": "Apple Pencil Pro",
+    "image": "✏️",
+    "price": 7990,
+    "category": "Accessories",
+    "location": "SM Lipa",
+    "description": "Engineered for pixel-perfect precision.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-19T10:00:00.000Z"
+  },
+  {
+    "name": "USB-C Woven Charge Cable",
+    "image": "🔌",
+    "price": 900,
+    "category": "Accessories",
+    "location": "SM Lipa",
+    "description": "1m woven charge cable with USB-C connectors.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-20T10:00:00.000Z"
+  },
+  {
+    "name": "Polishing Cloth",
+    "image": "🧽",
+    "price": 990,
+    "category": "Accessories",
+    "location": "Makati",
+    "description": "Cleans any Apple display safely and effectively.",
+    "seller": "Apple Store",
+    "postedDate": "2026-03-20T10:00:00.000Z"
+  },
+  {
+    "name": "AirTag Keychain Case",
+    "image": "🔑",
+    "price": 500,
+    "category": "Accessories",
+    "location": "SM Lipa",
+    "description": "Protective case and keychain ring for AirTag.",
+    "seller": "Tech Haven",
+    "postedDate": "2026-03-21T10:00:00.000Z"
+  },
+  {
+    "name": "EarPods (USB-C)",
+    "image": "🎧",
+    "price": 800,
+    "category": "Audio",
+    "location": "Lipa City",
+    "description": "Classic wired EarPods with a USB-C connection.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-21T10:00:00.000Z"
+  },
+  {
+    "name": "3.5mm Headphone Jack Adapter",
+    "image": "🔌",
+    "price": 600,
+    "category": "Audio",
+    "location": "Makati",
+    "description": "Connects standard audio devices to USB-C ports.",
+    "seller": "Apple Store",
+    "postedDate": "2026-03-22T10:00:00.000Z"
+  },
+  {
+    "name": "AirPods Pro 2",
+    "image": "🎧",
+    "price": 14990,
+    "priceDiscount": 12000,
+    "category": "Audio",
+    "location": "SM Lipa",
+    "description": "Active Noise Cancellation and Adaptive Audio.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-23T10:00:00.000Z"
+  },
+  {
+    "name": "MagSafe Charger",
+    "image": "🔌",
+    "price": 2990,
+    "priceDiscount": 2500,
+    "category": "Accessories",
+    "location": "Makati",
+    "description": "Fast wireless charging up to 15W.",
+    "seller": "Apple Store",
+    "postedDate": "2026-03-24T10:00:00.000Z"
+  },
+  {
+    "name": "iPad mini",
+    "image": "📱",
+    "price": 30990,
+    "priceDiscount": 29000,
+    "category": "Electronics",
+    "location": "Lipa City",
+    "description": "Small but mighty iPad with A15 Bionic chip.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-25T10:00:00.000Z"
+  },
+  {
+    "name": "HomePod mini",
+    "image": "🔈",
+    "price": 5990,
+    "priceDiscount": 5000,
+    "category": "Audio",
+    "location": "SM Lipa",
+    "description": "Room-filling sound in a compact design.",
+    "seller": "Power Mac",
+    "postedDate": "2026-03-26T10:00:00.000Z"
+  },
+  {
+    "name": "Apple TV 4K",
+    "image": "📺",
+    "price": 8990,
+    "priceDiscount": 8000,
+    "category": "Electronics",
+    "location": "Makati",
+    "description": "Cinematic experience with 4K HDR.",
+    "seller": "Apple Store",
+    "postedDate": "2026-03-27T10:00:00.000Z"
+  }
+]

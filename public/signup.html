@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create a new account on Local Marketplace.">
+    <title>Sign Up — Local Marketplace</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <script src="/js/main.js"></script>
+
+    <div class="auth-wrapper">
+        <div class="auth-box">
+            <div class="form-box fade-in">
+                <h1>Create Account</h1>
+                <p class="form-box__subtitle">Join the marketplace and start selling or buying today.</p>
+
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Full Name</label>
+                        <input type="text" id="name" class="form-input" placeholder="Juan Dela Cruz" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Min. 8 characters" required minlength="8">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="passwordConfirm">Confirm Password</label>
+                        <input type="password" id="passwordConfirm" class="form-input" placeholder="Re-enter password" required minlength="8">
+                    </div>
+
+                    <button type="submit" class="card__link btn--full btn--lg" id="btn-signup" style="margin: 2rem 0 0;">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="form-footer">
+                    Already have an account? <a href="/login">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        renderNavbar('signup');
+
+        if (isLoggedIn()) {
+            window.location.href = '/overview';
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btn = document.getElementById('btn-signup');
+
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('passwordConfirm').value;
+
+            if (password !== passwordConfirm) {
+                showToast('Passwords do not match.', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Creating account...';
+
+            const body = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password,
+                passwordConfirm
+            };
+
+            try {
+                const res = await fetch('/api/v1/users/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+
+                if (data.status === 'success' && data.token) {
+                    localStorage.setItem('jwt', data.token);
+                    localStorage.setItem('userName', data.data.user.name);
+                    showToast(`Welcome, ${data.data.user.name}!`, 'success');
+                    setTimeout(() => window.location.href = '/overview', 1200);
+                } else {
+                    showToast(data.message || 'Signup failed. Please check your inputs.', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
+                }
+            } catch (err) {
+                showToast('Network error. Please try again.', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
+            }
+        });
+    </script>
+</body>
+</html>

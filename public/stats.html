@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="Marketplace Analytics — Insights into product categories and pricing.">
+    <title>Marketplace Stats — Local Marketplace</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <script src="/js/main.js"></script>
+
+    <div class="container">
+        <div class="page-header fade-in">
+            <span class="page-header__tag">Analytics</span>
+            <h1>Market Insights</h1>
+            <p class="page-header__subtitle">Detailed statistics on product distribution and pricing across the
+                marketplace.</p>
+        </div>
+
+        <div id="loading"></div>
+        <script>document.getElementById('loading').innerHTML = GHOST_HTML;</script>
+
+        <div id="stats-container" class="cards-container"
+            style="display: none; grid-template-columns: repeat(auto-fill, minmax(32rem, 1fr));">
+            <!-- Stats cards will be injected here -->
+        </div>
+
+        <div id="top-deals-section" class="fade-in" style="display: none; margin-top: 8rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 3.5rem;">
+                <div style="width: 4rem; height: 1px; background: var(--border-color);"></div>
+                <h2 style="font-size: 2.2rem; color: var(--white); font-weight: 700;">Budget-Friendly Products</h2>
+                <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+            </div>
+            <div id="top-deals-container" class="cards-container">
+                <!-- Top 3 cheapest products will be injected here -->
+            </div>
+        </div>
+
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-state__icon"><i data-lucide="bar-chart-3"></i></div>
+            <p class="empty-state__text">No analytics data available yet.</p>
+        </div>
+    </div>
+
+    <script>
+        renderNavbar('stats');
+
+        async function loadTopDeals() {
+            try {
+                const response = await fetch('/api/v1/products/top-3-cheapest');
+                const result = await response.json();
+
+                if (result.status === 'success' && result.data.products.length > 0) {
+                    const products = result.data.products;
+                    const sectionEl = document.getElementById('top-deals-section');
+                    const containerEl = document.getElementById('top-deals-container');
+
+                    sectionEl.style.display = 'block';
+                    containerEl.innerHTML = products.map((p, i) => `
+                        <div class="deal-card card" style="animation-delay: ${i * 0.1}s; position: relative; overflow: hidden; cursor: default; min-height: 28rem;">
+                            <!-- Default: Product Info -->
+                            <div class="deal-card__info" style="padding: 3rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; position: relative; z-index: 2; transition: opacity 0.4s ease, transform 0.4s ease;">
+                                <div style="position: absolute; top: 1.4rem; left: 1.4rem; background: var(--success); color: var(--white); font-size: 1rem; font-weight: 800; padding: 0.5rem 1.2rem; border-radius: 2rem; letter-spacing: 1px; box-shadow: var(--neu-raised-sm);">#${i + 1} DEAL</div>
+                                <span class="card__badge" style="position: static; margin-bottom: 2rem;">${p.category || 'General'}</span>
+                                <h3 style="font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.2rem;">${p.name}</h3>
+                                <p style="font-size: 1.2rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.8rem;">Starting at</p>
+                                <p style="font-size: 3.2rem; font-weight: 800; color: var(--success); text-shadow: 0 0 20px rgba(0, 184, 148, 0.2);">₱${p.price.toLocaleString()}</p>
+                                <p style="margin-top: 2.5rem; font-size: 1.1rem; color: var(--text-muted); font-style: italic;">Hover to view product</p>
+                            </div>
+
+                            <!-- Hover: Product Image Reveal -->
+                            <div class="deal-card__image" style="position: absolute; inset: 0; z-index: 3; opacity: 0; transform: scale(1.1); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); background: var(--bg-primary);">
+                                <img src="${p.image || 'https://images.unsplash.com/photo-1616423640778-28d1b53229bd?q=80&w=800&auto=format&fit=crop'}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 2.5rem; background: linear-gradient(to top, rgba(10,10,14,0.95) 0%, rgba(10,10,14,0.4) 70%, transparent 100%); backdrop-filter: blur(4px);">
+                                    <h3 style="font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">${p.name}</h3>
+                                    <span style="font-size: 2.2rem; font-weight: 900; color: var(--success); text-shadow: 0 0 15px rgba(0, 184, 148, 0.4);">₱${p.price.toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    if (window.lucide) lucide.createIcons();
+                }
+            } catch (err) {
+                console.error('Failed to load top deals:', err);
+            }
+        }
+
+        async function loadStats() {
+            const loadingEl = document.getElementById('loading');
+            const containerEl = document.getElementById('stats-container');
+            const emptyEl = document.getElementById('empty-state');
+
+            try {
+                const response = await fetch('/api/v1/products/product-category');
+                const result = await response.json();
+
+                if (result.status === 'success' && result.data && result.data.stats) {
+                    const stats = result.data.stats;
+                    loadingEl.style.display = 'none';
+
+                    if (stats.length === 0) {
+                        emptyEl.style.display = 'block';
+                        return;
+                    }
+
+                    containerEl.style.display = 'grid';
+                    containerEl.innerHTML = stats.map((s, i) => `
+                        <div class="card" style="animation-delay: ${i * 0.1}s; padding: 3rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                                <span class="card__badge" style="position: static;">${s.numProducts} Items</span>
+                                <i data-lucide="${getCategoryIcon(s._id)}" style="color: var(--primary-light); width: 2.4rem; height: 2.4rem;"></i>
+                            </div>
+                            
+                            <h2 style="font-size: 2.4rem; margin-bottom: 2.5rem; color: var(--white);">${s._id || 'Uncategorized'}</h2>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                                    <p style="font-size: 1.2rem; color: var(--primary-light); font-weight: 700; text-transform: uppercase; margin-bottom: 0.8rem; letter-spacing: 0.5px;">Avg. List Price</p>
+                                    <p style="font-size: 1.9rem; font-weight: 800; color: var(--white);">₱${Math.round(s.avgPrice).toLocaleString()}</p>
+                                </div>
+                                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                                    <p style="font-size: 1.2rem; color: var(--success); font-weight: 700; text-transform: uppercase; margin-bottom: 0.8rem; letter-spacing: 0.5px;">Total Category Value</p>
+                                    <p style="font-size: 1.9rem; font-weight: 800; color: var(--white);">₱${Math.round(s.totalPrice).toLocaleString()}</p>
+                                </div>
+                                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                                    <p style="font-size: 1.2rem; color: var(--text-sub); font-weight: 700; text-transform: uppercase; margin-bottom: 0.8rem; letter-spacing: 0.5px;">Lowest Listing</p>
+                                    <p style="font-size: 1.7rem; font-weight: 700; color: var(--white);">₱${s.minPrice.toLocaleString()}</p>
+                                </div>
+                                <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                                    <p style="font-size: 1.2rem; color: var(--text-sub); font-weight: 700; text-transform: uppercase; margin-bottom: 0.8rem; letter-spacing: 0.5px;">Highest Listing</p>
+                                    <p style="font-size: 1.7rem; font-weight: 700; color: var(--white);">₱${s.maxPrice.toLocaleString()}</p>
+                                </div>
+                            </div>
+                            <p style="margin-top: 2rem; font-size: 1.25rem; color: var(--text-muted); line-height: 1.5;">
+                                This category has <strong>${s.numProducts}</strong> active ${s.numProducts === 1 ? 'listing' : 'listings'}. 
+                                The market range for <strong>${s._id}</strong> spans from ₱${s.minPrice.toLocaleString()} to ₱${s.maxPrice.toLocaleString()}.
+                            </p>
+                        </div>
+                    `).join('');
+
+                    if (window.lucide) lucide.createIcons();
+                }
+            } catch (err) {
+                loadingEl.style.display = 'none';
+                showToast('Failed to load statistics.', 'error');
+            }
+        }
+
+        loadStats();
+        loadTopDeals();
+    </script>
+</body>
+
+</html>

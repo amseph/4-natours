@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="View product details on Local Marketplace.">
+    <title>Product Details — Local Marketplace</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <script src="/js/main.js"></script>
+
+    <div class="container">
+        <div style="margin-bottom: 2.5rem;" class="fade-in">
+            <a href="/overview" class="card__link btn--secondary" id="btn-back">← Back to Shop</a>
+        </div>
+
+        <div id="loading"></div>
+        <script>document.getElementById('loading').innerHTML = GHOST_HTML;</script>
+
+        <div id="product-detail"></div>
+    </div>
+
+    <!-- UPDATE MODAL -->
+    <div id="updateModal" class="modal">
+        <div class="modal__content">
+            <h2 class="modal__title">Update Product</h2>
+            <form id="updateForm">
+                <div class="form-group">
+                    <label class="form-label" for="edit-name">Product Name</label>
+                    <input type="text" id="edit-name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="edit-price">Price (₱)</label>
+                    <input type="number" id="edit-price" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="edit-category">Category</label>
+                    <input type="text" id="edit-category" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="edit-description">Description</label>
+                    <textarea id="edit-description" class="form-input" style="min-height: 100px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="edit-image">Product Image URL</label>
+                    <input type="url" id="edit-image" class="form-input" placeholder="https://images.unsplash.com/...">
+                </div>
+                
+                <div class="modal__actions">
+                    <button type="button" class="card__link btn--secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="card__link btn--primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div id="deleteModal" class="modal modal--danger">
+        <div class="modal__content">
+            <h2 class="modal__title">Delete Product?</h2>
+            <p style="color: var(--text-sub); font-size: 1.4rem; margin-bottom: 2.5rem; line-height: 1.6;">
+                Are you sure you want to permanently delete this product? This action cannot be undone and the product will be removed from the marketplace.
+            </p>
+            
+            <div class="modal__actions">
+                <button type="button" class="card__link btn--secondary" onclick="closeDeleteModal()">Cancel</button>
+                <button type="button" class="card__link btn--danger" id="confirmDeleteBtn">Yes, Delete Product</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        renderNavbar('overview');
+
+        let currentProductId = '';
+
+        async function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const loadingEl = document.getElementById('loading');
+
+            if (!id) {
+                loadingEl.style.display = 'none';
+                showToast('No product ID provided.', 'error');
+                return;
+            }
+
+            currentProductId = id;
+
+            try {
+                const response = await fetch(`/api/v1/products/${id}`);
+                const result = await response.json();
+
+                if (result.status !== 'success' || !result.data || !result.data.product) {
+                    loadingEl.style.display = 'none';
+                    showToast('Product not found.', 'error');
+                    return;
+                }
+
+                const p = result.data.product;
+                loadingEl.style.display = 'none';
+
+                const icon = getCategoryIcon(p.category);
+                const imageHtml = p.image && p.image.startsWith('http') 
+                    ? `<img src="${p.image}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover;">`
+                    : `<i data-lucide="${icon}"></i>`;
+
+                const container = document.getElementById('product-detail');
+                container.innerHTML = `
+                    <div class="product fade-in">
+                        <div class="product__hero">
+                            <div class="product__emoji-large">
+                                ${imageHtml}
+                            </div>
+                        </div>
+                        
+                        <div class="product__info">
+                            <p class="product__category">${p.category || 'General'}</p>
+                            <h1 class="product__name">${p.name}</h1>
+                            <p class="product__seller">
+                                Listed by <strong>${p.seller || 'Unknown Merchant'}</strong>
+                                ${p.daysPosted !== undefined ? ` · ${p.daysPosted} day${p.daysPosted !== 1 ? 's' : ''} ago` : ''}
+                            </p>
+                            
+                            <div class="product__price">₱${Number(p.price).toLocaleString()}</div>
+                            
+                            <h3 class="product__desc-title">Description</h3>
+                            <p class="product__desc">${p.description}</p>
+
+                            ${p.location ? `<p style="color: var(--text-muted); font-size: 1.3rem; margin-bottom: 2.5rem; display: flex; align-items: center; gap: 0.8rem;">
+                                <i data-lucide="map-pin" style="width: 1.4rem; height: 1.4rem;"></i> ${p.location}
+                            </p>` : ''}
+
+                            <div class="product__actions">
+                                <button class="card__link btn--success" onclick="openUpdateModal()" id="btn-update">
+                                    <i data-lucide="edit-3" style="width: 1.6rem; height: 1.6rem; margin-right: 0.5rem;"></i> Update Product
+                                </button>
+                                <button class="card__link btn--danger" onclick="openDeleteModal()" id="btn-delete">
+                                    <i data-lucide="trash-2" style="width: 1.6rem; height: 1.6rem; margin-right: 0.5rem;"></i> Delete Product
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Initialize Lucide for dynamic content
+                if (window.lucide) lucide.createIcons();
+
+                // Pre-fill update modal
+                document.getElementById('edit-name').value = p.name;
+                document.getElementById('edit-price').value = p.price;
+                document.getElementById('edit-category').value = p.category || '';
+                document.getElementById('edit-description').value = p.description || '';
+                document.getElementById('edit-image').value = p.image || '';
+
+            } catch (err) {
+                loadingEl.style.display = 'none';
+                showToast('Error loading product details.', 'error');
+            }
+        }
+
+        // Update Modal Logic
+        function openUpdateModal() {
+            document.getElementById('updateModal').classList.add('modal--visible');
+        }
+
+        function closeModal() {
+            document.getElementById('updateModal').classList.remove('modal--visible');
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const body = {
+                name: document.getElementById('edit-name').value,
+                price: Number(document.getElementById('edit-price').value),
+                category: document.getElementById('edit-category').value,
+                description: document.getElementById('edit-description').value,
+                image: document.getElementById('edit-image').value
+            };
+
+            try {
+                const res = await authFetch(`/api/v1/products/${currentProductId}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                if (res.ok) {
+                    showToast('Product updated successfully!', 'success');
+                    closeModal();
+                    setTimeout(() => location.reload(), 1200);
+                } else {
+                    const err = await res.json();
+                    showToast(err.message || 'Failed to update product.', 'error');
+                }
+            } catch (e) {
+                showToast('Network error. Please try again.', 'error');
+            }
+        });
+
+        // Delete Modal Logic
+        function openDeleteModal() {
+            document.getElementById('deleteModal').classList.add('modal--visible');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('modal--visible');
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('confirmDeleteBtn');
+            btn.disabled = true;
+            btn.textContent = 'Deleting...';
+
+            try {
+                const res = await authFetch(`/api/v1/products/${currentProductId}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok || res.status === 204) {
+                    closeDeleteModal();
+                    showToast('Product deleted successfully.', 'success');
+                    setTimeout(() => window.location.href = '/overview', 1200);
+                } else {
+                    const err = await res.json();
+                    showToast(err.message || 'Only admins can delete products.', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Yes, Delete Product';
+                }
+            } catch (e) {
+                showToast('Network error. Please try again.', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Yes, Delete Product';
+            }
+        });
+
+        loadProductDetail();
+    </script>
+</body>
+</html>
