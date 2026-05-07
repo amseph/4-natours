@@ -82,6 +82,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(express.static(`${__dirname}/public`));
+
+app.use('/api/v1/products', productRouter);
+app.use('/api/v1/users', userRouter);
+
 app.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -90,11 +95,6 @@ app.get('/', (req, res) => {
     documentation: '/api/v1/products'
   });
 });
-
-app.use(express.static(`${__dirname}/public`));
-
-app.use('/api/v1/products', productRouter);
-app.use('/api/v1/users', userRouter);
 
 app.get('/stats', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'stats.html'));
