@@ -1,4 +1,3 @@
-// MUST BE AT THE VERY TOP to catch synchronous exceptions
 process.on('uncaughtException', err => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
   console.log(err.name, err.message);
@@ -19,7 +18,7 @@ mongoose
   .connect(DB)
   .then(() => {
     console.log('DB connection successful!');
-  }); // Removed the .catch block so Unhandled Rejections can trigger
+  });
 
 const port = process.env.PORT || 3000;
 
