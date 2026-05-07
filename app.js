@@ -48,7 +48,7 @@ app.use((req, res, next) => {
   const sanitize = (obj) => {
     if (!obj || typeof obj !== 'object') return obj;
     const cleanObj = Array.isArray(obj) ? [] : {};
-    
+
     for (const key of Object.keys(obj)) {
       if (key.startsWith('$') || key.includes('.')) {
         // Skip restricted keys
@@ -85,12 +85,20 @@ app.use((req, res, next) => {
 // hpp skipped — Express 5 makes req.query read-only; 
 // parameter pollution is handled by APIFeatures filtering
 
-app.use(express.static(`${__dirname}/public`)); 
+app.use(express.static(`${__dirname}/public`));
 
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);
 
-app.get('/', (req, res) => res.status(200).sendFile(`${__dirname}/public/index.html`));
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    message: 'Local Marketplace API is running',
+    frontend: 'https://jaurigue-local-marketplace-online.onrender.com',
+    documentation: '/api/v1/products'
+  });
+});
+
 app.get('/stats', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'stats.html'));
 });
