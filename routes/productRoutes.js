@@ -18,8 +18,8 @@ router.route('/:id')
   .get(productController.getProduct)
   .patch(authController.protect, productController.updateProduct)
   .delete(
-    authController.protect, 
-    authController.restrictTo('admin'), 
+    authController.protect,
+    authController.restrictTo('admin'),
     productController.deleteProduct
   );
 

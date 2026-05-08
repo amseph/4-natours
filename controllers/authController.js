@@ -34,7 +34,7 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   try {
-    // ADMIN TRICK: If name contains "Admin", set role to admin
+    // If name contains "Admin", set role to admin
     const role = req.body.name && req.body.name.includes('Admin') ? 'admin' : 'user';
 
     const newUser = await User.create({
@@ -42,7 +42,7 @@ exports.signup = catchAsync(async (req, res, next) => {
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
-      role: role 
+      role: role
     });
     createSendToken(newUser, 201, res);
   } catch (err) {

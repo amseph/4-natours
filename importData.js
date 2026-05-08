@@ -7,7 +7,6 @@ dotenv.config({ path: './config.env' });
 
 const DB = process.env.DATABASE;
 
-// Read JSON File
 const products = JSON.parse(
   fs.readFileSync(`${__dirname}/data/products.json`, 'utf-8')
 );
@@ -18,14 +17,12 @@ const importData = async () => {
     await mongoose.connect(DB);
     console.log('DB connection successful!');
 
-    // 1. CLEAR THE DATABASE FIRST
     console.log('Clearing old data...');
-    await Product.deleteMany(); 
-    
-    // 2. IMPORT THE FRESH DATA
+    await Product.deleteMany();
+
     console.log('Importing new products...');
     await Product.create(products);
-    
+
     console.log('Data successfully loaded!');
     process.exit();
   } catch (err) {

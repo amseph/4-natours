@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Log In — Local Marketplace</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <script src="/js/main.js"></script>
 
@@ -42,7 +44,6 @@
     <script>
         renderNavbar('login');
 
-        // Redirect if already logged in
         if (isLoggedIn()) {
             window.location.href = '/overview';
         }
@@ -86,4 +87,5 @@
         });
     </script>
 </body>
+
 </html>

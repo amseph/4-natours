@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
     <script src="/js/main.js"></script>
 
@@ -18,25 +20,26 @@
             </div>
             <h1>Your Local Marketplace</h1>
             <p class="welcome-box__subtitle">
-                Discover, buy, and sell products in your community. 
+                Discover, buy, and sell products in your community.
                 A simple, fast, and secure way to connect with local sellers and find great deals.
             </p>
-            
+
             <div class="button-group">
-                <a href="/overview" class="card__link btn--lg" id="btn-explore" style="display: flex; align-items: center; gap: 0.8rem;">
+                <a href="/overview" class="card__link btn--lg" id="btn-explore"
+                    style="display: flex; align-items: center; gap: 0.8rem;">
                     Explore Products <i data-lucide="arrow-right" style="width: 1.8rem; height: 1.8rem;"></i>
                 </a>
             </div>
         </div>
 
-        <!-- Feature highlights -->
         <div class="cards-container" style="max-width: 80rem; margin: 0 auto;">
             <div class="card" style="text-align: center; padding: 3.5rem 2.5rem;">
                 <div style="margin-bottom: 1.5rem; display: flex; justify-content: center;">
                     <i data-lucide="shield-check" style="width: 4rem; height: 4rem; color: var(--success);"></i>
                 </div>
                 <h3 class="card__heading" style="margin-bottom: 1rem;">Secure Auth</h3>
-                <p class="card__details" style="margin: 0; text-transform: none; letter-spacing: 0; color: var(--text-sub);">
+                <p class="card__details"
+                    style="margin: 0; text-transform: none; letter-spacing: 0; color: var(--text-sub);">
                     JWT-based authentication with password encryption keeps your account safe.
                 </p>
             </div>
@@ -45,7 +48,8 @@
                     <i data-lucide="zap" style="width: 4rem; height: 4rem; color: var(--warning);"></i>
                 </div>
                 <h3 class="card__heading" style="margin-bottom: 1rem;">Fast API</h3>
-                <p class="card__details" style="margin: 0; text-transform: none; letter-spacing: 0; color: var(--text-sub);">
+                <p class="card__details"
+                    style="margin: 0; text-transform: none; letter-spacing: 0; color: var(--text-sub);">
                     RESTful API with filtering, sorting, pagination and field limiting.
                 </p>
             </div>
@@ -54,7 +58,8 @@
                     <i data-lucide="bar-chart-3" style="width: 4rem; height: 4rem; color: var(--accent-light);"></i>
                 </div>
                 <h3 class="card__heading" style="margin-bottom: 1rem;">Analytics</h3>
-                <p class="card__details" style="margin: 0; text-transform: none; letter-spacing: 0; color: var(--text-sub);">
+                <p class="card__details"
+                    style="margin: 0; text-transform: none; letter-spacing: 0; color: var(--text-sub);">
                     Aggregation pipelines provide category stats, averages, and insights.
                 </p>
             </div>
@@ -65,4 +70,5 @@
         renderNavbar('home');
     </script>
 </body>
+
 </html>

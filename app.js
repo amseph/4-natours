@@ -43,7 +43,6 @@ app.use('/api', limiter);
 app.use(express.json({ limit: '10kb' }));
 app.use(cookieParser());
 
-// Custom sanitization compatible with Express 5 (req.query is read-only)
 app.use((req, res, next) => {
   const sanitize = (obj) => {
     if (!obj || typeof obj !== 'object') return obj;
@@ -51,7 +50,6 @@ app.use((req, res, next) => {
 
     for (const key of Object.keys(obj)) {
       if (key.startsWith('$') || key.includes('.')) {
-        // Skip restricted keys
         continue;
       } else if (typeof obj[key] === 'object' && obj[key] !== null) {
         cleanObj[key] = sanitize(obj[key]);
@@ -68,7 +66,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Custom XSS sanitization (xss-clean is incompatible with Express 5's read-only req.query)
 app.use((req, res, next) => {
   const stripTags = (val) => {
     if (typeof val === 'string') return val.replace(/</g, '&lt;').replace(/>/g, '&gt;');

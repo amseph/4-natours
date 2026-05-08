@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
     <script src="/js/main.js"></script>
 
@@ -22,7 +24,6 @@
         <div id="product-detail"></div>
     </div>
 
-    <!-- UPDATE MODAL -->
     <div id="updateModal" class="modal">
         <div class="modal__content">
             <h2 class="modal__title">Update Product</h2>
@@ -47,7 +48,7 @@
                     <label class="form-label" for="edit-image">Product Image URL</label>
                     <input type="url" id="edit-image" class="form-input" placeholder="https://images.unsplash.com/...">
                 </div>
-                
+
                 <div class="modal__actions">
                     <button type="button" class="card__link btn--secondary" onclick="closeModal()">Cancel</button>
                     <button type="submit" class="card__link btn--primary">Save Changes</button>
@@ -56,14 +57,14 @@
         </div>
     </div>
 
-    <!-- DELETE CONFIRMATION MODAL -->
     <div id="deleteModal" class="modal modal--danger">
         <div class="modal__content">
             <h2 class="modal__title">Delete Product?</h2>
             <p style="color: var(--text-sub); font-size: 1.4rem; margin-bottom: 2.5rem; line-height: 1.6;">
-                Are you sure you want to permanently delete this product? This action cannot be undone and the product will be removed from the marketplace.
+                Are you sure you want to permanently delete this product? This action cannot be undone and the product
+                will be removed from the marketplace.
             </p>
-            
+
             <div class="modal__actions">
                 <button type="button" class="card__link btn--secondary" onclick="closeDeleteModal()">Cancel</button>
                 <button type="button" class="card__link btn--danger" id="confirmDeleteBtn">Yes, Delete Product</button>
@@ -103,7 +104,7 @@
                 loadingEl.style.display = 'none';
 
                 const icon = getCategoryIcon(p.category);
-                const imageHtml = p.image && p.image.startsWith('http') 
+                const imageHtml = p.image && p.image.startsWith('http')
                     ? `<img src="${p.image}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover;">`
                     : `<i data-lucide="${icon}"></i>`;
 
@@ -145,10 +146,8 @@
                     </div>
                 `;
 
-                // Initialize Lucide for dynamic content
                 if (window.lucide) lucide.createIcons();
 
-                // Pre-fill update modal
                 document.getElementById('edit-name').value = p.name;
                 document.getElementById('edit-price').value = p.price;
                 document.getElementById('edit-category').value = p.category || '';
@@ -161,7 +160,6 @@
             }
         }
 
-        // Update Modal Logic
         function openUpdateModal() {
             document.getElementById('updateModal').classList.add('modal--visible');
         }
@@ -172,7 +170,7 @@
 
         document.getElementById('updateForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const body = {
                 name: document.getElementById('edit-name').value,
                 price: Number(document.getElementById('edit-price').value),
@@ -201,7 +199,6 @@
             }
         });
 
-        // Delete Modal Logic
         function openDeleteModal() {
             document.getElementById('deleteModal').classList.add('modal--visible');
         }
@@ -240,4 +237,5 @@
         loadProductDetail();
     </script>
 </body>
+
 </html>

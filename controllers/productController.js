@@ -14,11 +14,10 @@ exports.aliasTop3Cheapest = (req, res, next) => {
     sort: 'price',
     fields: 'name,price,category,seller,rating,image'
   };
-  
-  next(); 
+
+  next();
 };
 
-// Task 1: Aggregation Pipeline
 exports.getProductCategoryStats = catchAsync(async (req, res, next) => {
   const stats = await Product.aggregate([
     {
@@ -32,7 +31,7 @@ exports.getProductCategoryStats = catchAsync(async (req, res, next) => {
       }
     },
     {
-      $sort: { numProducts: -1 } 
+      $sort: { numProducts: -1 }
     }
   ]);
 
@@ -49,7 +48,7 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
     .filter()
     .sort()
     .limitFields()
-    .paginate(); 
+    .paginate();
 
   const products = await features.query;
 
@@ -62,7 +61,7 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
 
 exports.getProduct = catchAsync(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
-  
+
   if (!product) {
     return next(new AppError('No product found with that ID', 404));
   }
@@ -90,7 +89,7 @@ exports.updateProduct = catchAsync(async (req, res, next) => {
 
 exports.deleteProduct = catchAsync(async (req, res, next) => {
   const product = await Product.findByIdAndDelete(req.params.id);
-  
+
   if (!product) {
     return next(new AppError('No product found with that ID', 404));
   }

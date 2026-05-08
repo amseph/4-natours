@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Add Product — Local Marketplace</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <script src="/js/main.js"></script>
 
@@ -18,7 +20,7 @@
         <div class="form-box fade-in">
             <h1>List a Product</h1>
             <p class="form-box__subtitle">Fill in the details below to list your product on the marketplace.</p>
-            
+
             <form id="productForm">
                 <div class="form-group">
                     <label class="form-label" for="name">Product Name</label>
@@ -43,19 +45,22 @@
                 <div class="form-group">
                     <label class="form-label" for="image">Product Image URL (Optional)</label>
                     <input type="url" id="image" class="form-input" placeholder="https://images.unsplash.com/photo-...">
-                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-top: 0.5rem;">Leave blank to use a professional category icon.</p>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-top: 0.5rem;">Leave blank to use a
+                        professional category icon.</p>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="description">Description</label>
-                    <textarea id="description" class="form-input" placeholder="Briefly describe your product (max 50 chars)" rows="3" required maxlength="50"></textarea>
+                    <textarea id="description" class="form-input"
+                        placeholder="Briefly describe your product (max 50 chars)" rows="3" required
+                        maxlength="50"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="seller">Seller Name</label>
                     <input type="text" id="seller" class="form-input" placeholder="Your name" required>
                 </div>
-                
+
                 <button type="submit" class="card__link btn--full btn--lg" id="btn-submit" style="margin: 2.5rem 0 0;">
                     Publish Product
                 </button>
@@ -107,4 +112,5 @@
         });
     </script>
 </body>
+
 </html>
